@@ -39,12 +39,26 @@ class ViewController: UIViewController {
             let width = CGFloat(Int(widthLabel.text!)!)
             let height = CGFloat(Int(heightLabel.text!)!)
 
+            
+            //Adding coordinates with custom coordinates
             objectToAdd = UIView()
             objectToAdd.frame = CGRect(x: x, y: y, width: width, height: height)
             objectToAdd.backgroundColor = .brown
             objectToAdd.layer.zPosition = -1
+            objectToAdd.tag = 1
             objectToAdd.layer.opacity = 0.5
             self.view.addSubview(objectToAdd)
+            
+            
+            //clearing / emptying textfields after adding values
+            xLabel.text = ""
+            yLabel.text = ""
+            widthLabel.text = ""
+            heightLabel.text = ""
+            
+            
+            //dismissing the keyboard
+            self.view.endEditing(true)
         }
         
     }
@@ -53,7 +67,29 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
+    
+    
+    // fujnction that removes all added object
+    func deleteObjects() {
+        //objectToAdd.removeFromSuperview()
+        
+        for view in self.view.subviews {
+            /**
+            if view.backgroundColor == .brown {
+                view.removeFromSuperview()
+            }
+             **/
+            
+            if view.tag == 1 {
+                view.removeFromSuperview()
+            }
+        }
+        
+        
+    }
 
+    
+    //Called when **actionSheet button is pressed
     @IBAction func btnTapped(_ sender: UIButton) {
         
        //self.addObj()
@@ -61,6 +97,11 @@ class ViewController: UIViewController {
         
         alertController.addAction(UIAlertAction(title: "Add", style: .default) { (action: UIAlertAction) in
             self.addObj()
+        })
+        
+        
+        alertController.addAction(UIAlertAction(title: "Delete", style: .destructive) { _ in
+            self.deleteObjects()
         })
         
         self.present(alertController, animated: true)
